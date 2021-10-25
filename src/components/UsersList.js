@@ -42,14 +42,8 @@ const UsersList = (props) => {
       });
   };
 
-  const findByTitle = () => {
-    TutorialDataService.findByTitle(searchTitle)
-      .then((response) => {
-        setusers(response.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+  const findByTitle = (searchTitle) => {
+    console.log(users.filter(search=>search.first_name==="George"))
   };
 
   const openTutorial = (rowIndex) => {

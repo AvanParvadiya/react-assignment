@@ -25,7 +25,7 @@ const Users = (props) => {
   useEffect(() => {
     getTutorial(props.match.params.id);
     console.log(props.match.params.id)
-  }, [props.match.params.id,props.history]);
+  }, [props.match.params.id,props.history.location.pathname]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
