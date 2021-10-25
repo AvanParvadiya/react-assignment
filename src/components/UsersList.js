@@ -56,6 +56,7 @@ const UsersList = (props) => {
     const id = usersRef.current[rowIndex].id;
 
     props.history.push("/users/" + id);
+    
   };
 
   const deleteTutorial = (rowIndex) => {

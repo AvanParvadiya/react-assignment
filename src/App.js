@@ -6,7 +6,7 @@ import "@fortawesome/fontawesome-free/js/all.js";
 import "./App.css";
 
 import AddUser from "./components/AddUser";
-import Tutorial from "./components/Tutorial";
+import Users from "./components/Users";
 
 import UsersList from "./components/UsersList";
 
@@ -35,7 +35,7 @@ function App() {
         <Switch>
           <Route exact path={["/", "/Users"]} component={UsersList} />
           <Route exact path="/add" component={AddUser} />
-          <Route path="/tutorials/:id" component={Tutorial} />
+          <Route path="/tutorials/:id" component={Users} />
         </Switch>
       </div>
     </div>

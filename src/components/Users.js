@@ -1,73 +1,74 @@
 import React, { useState, useEffect } from "react";
 import TutorialDataService from "../services/UserService";
 
-const Tutorial = props => {
+const Users = (props) => {
   const initialTutorialState = {
     id: null,
     title: "",
     description: "",
-    published: false
+    published: false,
   };
   const [currentTutorial, setCurrentTutorial] = useState(initialTutorialState);
   const [message, setMessage] = useState("");
 
-  const getTutorial = id => {
+  const getTutorial = (id) => {
     TutorialDataService.get(id)
-      .then(response => {
+      .then((response) => {
         setCurrentTutorial(response.data);
         console.log(response.data);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   };
 
   useEffect(() => {
     getTutorial(props.match.params.id);
-  }, [props.match.params.id]);
+    console.log(props.match.params.id)
+  }, [props.match.params.id,props.history]);
 
-  const handleInputChange = event => {
+  const handleInputChange = (event) => {
     const { name, value } = event.target;
     setCurrentTutorial({ ...currentTutorial, [name]: value });
   };
 
-  const updatePublished = status => {
+  const updatePublished = (status) => {
     var data = {
       id: currentTutorial.id,
       title: currentTutorial.title,
       description: currentTutorial.description,
-      published: status
+      published: status,
     };
 
     TutorialDataService.update(currentTutorial.id, data)
-      .then(response => {
+      .then((response) => {
         setCurrentTutorial({ ...currentTutorial, published: status });
         console.log(response.data);
         setMessage("The status was updated successfully!");
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   };
 
   const updateTutorial = () => {
     TutorialDataService.update(currentTutorial.id, currentTutorial)
-      .then(response => {
+      .then((response) => {
         console.log(response.data);
         setMessage("The tutorial was updated successfully!");
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   };
 
   const deleteTutorial = () => {
     TutorialDataService.remove(currentTutorial.id)
-      .then(response => {
+      .then((response) => {
         console.log(response.data);
         props.history.push("/tutorials");
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   };
@@ -148,4 +149,4 @@ const Tutorial = props => {
   );
 };
 
-export default Tutorial;
+export default Users;
