@@ -6,40 +6,43 @@ const AddTutorial = () => {
     id: null,
     first_name: "",
     last_name: "",
-    email: false
+    email: "",
+    job: "",
   };
-  const [tutorial, setTutorial] = useState(initialTutorialState);
+  const [user, setUser] = useState(initialTutorialState);
   const [submitted, setSubmitted] = useState(false);
 
-  const handleInputChange = event => {
+  const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setTutorial({ ...tutorial, [name]: value });
+    setUser({ ...user, [name]: value });
   };
 
   const saveTutorial = () => {
     var data = {
-      title: tutorial.title,
-      description: tutorial.description
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      job: user.job,
     };
 
     TutorialDataService.create(data)
-      .then(response => {
-        setTutorial({
+      .then((response) => {
+        setUser({
           id: response.data.id,
-          title: response.data.title,
-          description: response.data.description,
-          published: response.data.published
+          first_name: response.data.first_name,
+          last_name: response.data.last_name,
+          email: response.data.email,
+          job: response.data.job,
         });
         setSubmitted(true);
-        console.log(response.data);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   };
 
   const newTutorial = () => {
-    setTutorial(initialTutorialState);
+    setUser(initialTutorialState);
     setSubmitted(false);
   };
 
@@ -55,28 +58,53 @@ const AddTutorial = () => {
       ) : (
         <div>
           <div className="form-group">
-            <label htmlFor="title">Title</label>
+            <label htmlFor="title">First name</label>
             <input
               type="text"
               className="form-control"
               id="title"
               required
-              value={tutorial.title}
+              value={user.first_name}
               onChange={handleInputChange}
-              name="title"
+              name="first_name"
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="description">Description</label>
+            <label htmlFor="description">Last name</label>
             <input
               type="text"
               className="form-control"
               id="description"
               required
-              value={tutorial.description}
+              value={user.last_name}
               onChange={handleInputChange}
-              name="description"
+              name="last_name"
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="description">Email</label>
+            <input
+              type="text"
+              className="form-control"
+              id="description"
+              required
+              value={user.email}
+              onChange={handleInputChange}
+              name="email"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="description">Job</label>
+            <input
+              type="text"
+              className="form-control"
+              id="description"
+              required
+              value={user.job}
+              onChange={handleInputChange}
+              name="job"
             />
           </div>
 

@@ -14,13 +14,13 @@ function App() {
   return (
     <div>
       <nav className="navbar navbar-expand navbar-dark bg-dark">
-        <a href="/tutorials" className="navbar-brand">
-          bezKoder
+        <a href="/" className="navbar-brand">
+          AvanParvadiya
         </a>
         <div className="navbar-nav mr-auto">
           <li className="nav-item">
-            <Link to={"/tutorials"} className="nav-link">
-              Tutorials
+            <Link to={"/Users"} className="nav-link">
+              Users
             </Link>
           </li>
           <li className="nav-item">
@@ -33,7 +33,7 @@ function App() {
 
       <div className="container mt-3">
         <Switch>
-          <Route exact path={["/", "/tutorials"]} component={UsersList} />
+          <Route exact path={["/", "/Users"]} component={UsersList} />
           <Route exact path="/add" component={AddUser} />
           <Route path="/tutorials/:id" component={Tutorial} />
         </Switch>
