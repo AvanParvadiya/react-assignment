@@ -53,14 +53,13 @@ function App() {
   };
 
   const addnewUser = (addnewUser) => {
-    console.log(addnewUser);
+    
     setusers((prvUser) => {
       return [...prvUser, addnewUser];
     });
     setFilter((prvUser) => {
       return [...prvUser, addnewUser];
     });
-    console.log(users);
   };
   return (
     <div>

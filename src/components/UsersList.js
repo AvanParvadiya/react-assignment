@@ -59,7 +59,7 @@ const UsersList = (props) => {
           <input
             type="text"
             className="form-control"
-            placeholder="Search by title"
+            placeholder="Search by first name / last name / email"
             value={searchTitle}
             onChange={onChangeSearchTitle}
           />

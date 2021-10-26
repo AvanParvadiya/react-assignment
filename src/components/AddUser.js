@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import TutorialDataService from "../services/UserService";
+import UserService from "../services/UserService";
 
 const AddTutorial = (props) => {
   const initialTutorialState = {
@@ -9,6 +9,7 @@ const AddTutorial = (props) => {
     email: "",
     job: "",
   };
+
   const [user, setUser] = useState(initialTutorialState);
   const [submitted, setSubmitted] = useState(false);
 
@@ -23,16 +24,19 @@ const AddTutorial = (props) => {
       last_name: user.last_name,
       email: user.email,
       job: user.job,
+      avatar: "https://i.pravatar.cc/128"
     };
 
-    TutorialDataService.create(data)
+    UserService.create(data)
       .then((response) => {
+        console.log(response.data);
         setUser({
           id: response.data.id,
           first_name: response.data.first_name,
           last_name: response.data.last_name,
           email: response.data.email,
           job: response.data.job,
+          avatar: response.data.avatar,
         });
         props.addnewUser({
           id: response.data.id,
@@ -40,6 +44,7 @@ const AddTutorial = (props) => {
           last_name: response.data.last_name,
           email: response.data.email,
           job: response.data.job,
+          avatar: response.data.avatar,
         });
         setSubmitted(true);
       })
