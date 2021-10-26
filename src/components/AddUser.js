@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import UserService from "../services/UserService";
 
-const AddTutorial = (props) => {
-  const initialTutorialState = {
+const AddUser = (props) => {
+  const initialUserState = {
     id: null,
     first_name: "",
     last_name: "",
@@ -10,7 +10,7 @@ const AddTutorial = (props) => {
     job: "",
   };
 
-  const [user, setUser] = useState(initialTutorialState);
+  const [user, setUser] = useState(initialUserState);
   const [submitted, setSubmitted] = useState(false);
 
   const handleInputChange = (event) => {
@@ -18,7 +18,7 @@ const AddTutorial = (props) => {
     setUser({ ...user, [name]: value });
   };
 
-  const saveTutorial = () => {
+  const saveUser = () => {
     var data = {
       first_name: user.first_name,
       last_name: user.last_name,
@@ -53,8 +53,8 @@ const AddTutorial = (props) => {
       });
   };
 
-  const newTutorial = () => {
-    setUser(initialTutorialState);
+  const newUser = () => {
+    setUser(initialUserState);
     setSubmitted(false);
   };
 
@@ -63,7 +63,7 @@ const AddTutorial = (props) => {
       {submitted ? (
         <div>
           <h4>You submitted successfully!</h4>
-          <button className="btn btn-success" onClick={newTutorial}>
+          <button className="btn btn-success" onClick={newUser}>
             Add
           </button>
         </div>
@@ -120,7 +120,7 @@ const AddTutorial = (props) => {
             />
           </div>
 
-          <button onClick={saveTutorial} className="btn btn-success">
+          <button onClick={saveUser} className="btn btn-success">
             Submit
           </button>
         </div>
@@ -129,4 +129,4 @@ const AddTutorial = (props) => {
   );
 };
 
-export default AddTutorial;
+export default AddUser;

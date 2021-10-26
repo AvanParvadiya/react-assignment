@@ -14,9 +14,6 @@ const UsersList = (props) => {
     setSearchTitle(searchTitle);
   };
 
-  // const refreshList = () => {
-  //   props.retrieveusers();
-  // };
 
  
 
@@ -24,12 +21,12 @@ const UsersList = (props) => {
     props.searchUser(searchTitle);
   };
 
-  const openTutorial = (rowIndex) => {
+  const openUser = (rowIndex) => {
     const id = usersRef.current[rowIndex].id;
     history.push("/getuser", { id: id });
   };
 
-  const deleteTutorial = (rowIndex) => {
+  const deleteUser = (rowIndex) => {
     const id = usersRef.current[rowIndex].id;
 
     UserService.remove(id)
@@ -85,11 +82,11 @@ const UsersList = (props) => {
                 <td>{tableData.email}</td>
                 <td>
                   <div>
-                    <span onClick={() => openTutorial(rowIndex)}>
+                    <span onClick={() => openUser(rowIndex)}>
                       <i className="far fa-edit action mr-2"></i>
                     </span>
 
-                    <span onClick={() => deleteTutorial(rowIndex)}>
+                    <span onClick={() => deleteUser(rowIndex)}>
                       <i className="fas fa-trash action"></i>
                     </span>
                   </div>

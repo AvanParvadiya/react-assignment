@@ -14,7 +14,7 @@ const Users = (props) => {
   const [currentUser, setCurrentUser] = useState(initialUserState);
   const [message, setMessage] = useState("");
 
-  const getTutorial = (id) => {
+  const getUser = (id) => {
     UserService.get(id)
       .then((response) => {
         setCurrentUser(response.data.data);
@@ -25,14 +25,14 @@ const Users = (props) => {
   };
 
   useEffect(() => {
-    getTutorial(history.location.state.id);
+    getUser(history.location.state.id);
   }, [history.location.state.id]);
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setCurrentUser({ ...currentUser, [name]: value });
   };
 
-  const updateTutorial = () => {
+  const updateUser = () => {
     UserService.update(currentUser.id, currentUser)
       .then((response) => {
         console.log(response.data);
@@ -89,7 +89,7 @@ const Users = (props) => {
           <button
             type="submit"
             className="badge badge-success"
-            onClick={updateTutorial}
+            onClick={updateUser}
           >
             Update
           </button>
@@ -99,7 +99,7 @@ const Users = (props) => {
       ) : (
         <div>
           <br />
-          <p>Please click on a Tutorial...</p>
+          <p>Please click on a User...</p>
         </div>
       )}
     </div>
