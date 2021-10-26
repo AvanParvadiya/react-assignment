@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TutorialDataService from "../services/UserService";
 
-const AddTutorial = () => {
+const AddTutorial = (props) => {
   const initialTutorialState = {
     id: null,
     first_name: "",
@@ -28,6 +28,13 @@ const AddTutorial = () => {
     TutorialDataService.create(data)
       .then((response) => {
         setUser({
+          id: response.data.id,
+          first_name: response.data.first_name,
+          last_name: response.data.last_name,
+          email: response.data.email,
+          job: response.data.job,
+        });
+        props.addnewUser({
           id: response.data.id,
           first_name: response.data.first_name,
           last_name: response.data.last_name,

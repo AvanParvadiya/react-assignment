@@ -5,7 +5,7 @@ const getAll = () => {
 };
 
 const get = (id) => {
-  return http.get(`/tutorials/${id}`);
+  return http.get(`/users/${id}`);
 };
 
 const create = (data) => {
@@ -17,7 +17,7 @@ const update = (id, data) => {
 };
 
 const remove = (id) => {
-  return http.delete(`/tutorials/${id}`);
+  return http.delete(`/users/${id}`);
 };
 
 const removeAll = () => {

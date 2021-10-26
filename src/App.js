@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Switch, Route, Link } from "react-router-dom";
+import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.css";
 import "@fortawesome/fontawesome-free/js/all.js";
@@ -10,7 +11,56 @@ import Users from "./components/Users";
 
 import UsersList from "./components/UsersList";
 
+import UserService from "./services/UserService";
+
 function App() {
+  const [users, setusers] = useState([]);
+  const [filterUsers, setFilter] = useState([]);
+  const usersRef = useRef();
+  usersRef.current = users;
+  useEffect(() => {
+    retrieveusers();
+  }, []);
+
+  const retrieveusers = () => {
+    UserService.getAll()
+      .then((response) => {
+        setusers(response.data.data);
+        setFilter(response.data.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const searchUser = (searchTitle) => {
+    setFilter(
+      users.filter(
+        (user) =>
+          user.first_name.toUpperCase().includes(searchTitle.toUpperCase()) ||
+          user.last_name.toUpperCase().includes(searchTitle.toUpperCase()) ||
+          user.email.toUpperCase().includes(searchTitle.toUpperCase())
+      )
+    );
+  };
+
+  const deleteUser = (rowIndex) => {
+    let newusers = [...usersRef.current];
+    newusers.splice(rowIndex, 1);
+    setusers(newusers);
+    setFilter(newusers);
+  };
+
+  const addnewUser = (addnewUser) => {
+    console.log(addnewUser);
+    setusers((prvUser) => {
+      return [...prvUser, addnewUser];
+    });
+    setFilter((prvUser) => {
+      return [...prvUser, addnewUser];
+    });
+    console.log(users);
+  };
   return (
     <div>
       <nav className="navbar navbar-expand navbar-dark bg-dark">
@@ -33,9 +83,21 @@ function App() {
 
       <div className="container mt-3">
         <Switch>
-          <Route exact path={["/", "/Users"]} component={UsersList} />
-          <Route exact path="/add" component={AddUser} />
-          <Route path="/tutorials/:id" component={Users} />
+          <Route exact path={["/", "/Users"]}>
+            <UsersList
+              users={users}
+              filterUsers={filterUsers}
+              retrieveusers={retrieveusers}
+              searchUser={searchUser}
+              deleteUser={deleteUser}
+            />
+          </Route>
+          <Route exact path="/add">
+            <AddUser addnewUser={addnewUser} />
+          </Route>
+          <Route path="/getuser">
+            <Users />
+          </Route>
         </Switch>
       </div>
     </div>

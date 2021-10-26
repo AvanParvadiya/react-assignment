@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from "react";
-import TutorialDataService from "../services/UserService";
+import UserService from "../services/UserService";
+import { useHistory } from "react-router";
 
 const Users = (props) => {
-  const initialTutorialState = {
+  const initialUserState = {
     id: null,
-    title: "",
-    description: "",
-    published: false,
+    first_name: "",
+    last_name: "",
+    email: "",
   };
-  const [currentTutorial, setCurrentTutorial] = useState(initialTutorialState);
+  const history = useHistory();
+
+  const [currentUser, setCurrentUser] = useState(initialUserState);
   const [message, setMessage] = useState("");
 
   const getTutorial = (id) => {
-    TutorialDataService.get(id)
+    UserService.get(id)
       .then((response) => {
-        setCurrentTutorial(response.data);
-        console.log(response.data);
+        setCurrentUser(response.data.data);
       })
       .catch((e) => {
         console.log(e);
@@ -23,26 +25,25 @@ const Users = (props) => {
   };
 
   useEffect(() => {
-    getTutorial(props.match.params.id);
-    console.log(props.match.params.id)
-  }, [props.match.params.id,props.history.location.pathname]);
-
+    getTutorial(history.location.state.id);
+  }, [history.location.state.id]);
+  // props.match.params.id, props.history.location.pathname
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setCurrentTutorial({ ...currentTutorial, [name]: value });
+    setCurrentUser({ ...currentUser, [name]: value });
   };
 
   const updatePublished = (status) => {
     var data = {
-      id: currentTutorial.id,
-      title: currentTutorial.title,
-      description: currentTutorial.description,
-      published: status,
+      // id: currentUser.id,
+      first_name: currentUser.first_name,
+      last_name: currentUser.last_name,
+      email: currentUser.email,
     };
 
-    TutorialDataService.update(currentTutorial.id, data)
+    UserService.update(currentUser.id, data)
       .then((response) => {
-        setCurrentTutorial({ ...currentTutorial, published: status });
+        setCurrentUser({ ...currentUser, published: status });
         console.log(response.data);
         setMessage("The status was updated successfully!");
       })
@@ -52,10 +53,10 @@ const Users = (props) => {
   };
 
   const updateTutorial = () => {
-    TutorialDataService.update(currentTutorial.id, currentTutorial)
+    UserService.update(currentUser.id, currentUser)
       .then((response) => {
         console.log(response.data);
-        setMessage("The tutorial was updated successfully!");
+        setMessage("The user was updated successfully!");
       })
       .catch((e) => {
         console.log(e);
@@ -63,10 +64,10 @@ const Users = (props) => {
   };
 
   const deleteTutorial = () => {
-    TutorialDataService.remove(currentTutorial.id)
+    UserService.remove(currentUser.id)
       .then((response) => {
         console.log(response.data);
-        props.history.push("/tutorials");
+        props.history.push("/users");
       })
       .catch((e) => {
         console.log(e);
@@ -75,56 +76,45 @@ const Users = (props) => {
 
   return (
     <div>
-      {currentTutorial ? (
+      {currentUser ? (
         <div className="edit-form">
-          <h4>Tutorial</h4>
+          <h4>Update User</h4>
           <form>
             <div className="form-group">
-              <label htmlFor="title">Title</label>
+              <label htmlFor="first_name">First name</label>
               <input
                 type="text"
                 className="form-control"
-                id="title"
-                name="title"
-                value={currentTutorial.title}
+                id="first_name"
+                name="first_name"
+                value={currentUser.first_name}
                 onChange={handleInputChange}
               />
             </div>
             <div className="form-group">
-              <label htmlFor="description">Description</label>
+              <label htmlFor="last_name">Last name</label>
               <input
                 type="text"
                 className="form-control"
-                id="description"
-                name="description"
-                value={currentTutorial.description}
+                id="last_name"
+                name="last_name"
+                value={currentUser.last_name}
                 onChange={handleInputChange}
               />
             </div>
 
             <div className="form-group">
-              <label>
-                <strong>Status:</strong>
-              </label>
-              {currentTutorial.published ? "Published" : "Pending"}
+              <label htmlFor="email">Email :</label>
+              <input
+                type="text"
+                className="form-control"
+                id="email"
+                name="email"
+                value={currentUser.email}
+                onChange={handleInputChange}
+              />
             </div>
           </form>
-
-          {currentTutorial.published ? (
-            <button
-              className="badge badge-primary mr-2"
-              onClick={() => updatePublished(false)}
-            >
-              UnPublish
-            </button>
-          ) : (
-            <button
-              className="badge badge-primary mr-2"
-              onClick={() => updatePublished(true)}
-            >
-              Publish
-            </button>
-          )}
 
           <button className="badge badge-danger mr-2" onClick={deleteTutorial}>
             Delete

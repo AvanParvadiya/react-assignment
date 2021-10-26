@@ -1,38 +1,26 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
-import TutorialDataService from "../services/UserService";
+import React, { useState,useRef } from "react";
+import { useHistory } from "react-router-dom";
+
+import UserService from "../services/UserService";
 
 const UsersList = (props) => {
-  const [users, setusers] = useState([]);
+  
   const [searchTitle, setSearchTitle] = useState("");
   const usersRef = useRef();
 
-  usersRef.current = users;
-
-  useEffect(() => {
-    retrieveusers();
-  }, []);
-
+  usersRef.current = props.users;
+  const history = useHistory();
   const onChangeSearchTitle = (e) => {
     const searchTitle = e.target.value;
     setSearchTitle(searchTitle);
   };
 
-  const retrieveusers = () => {
-    TutorialDataService.getAll()
-      .then((response) => {
-        setusers(response.data.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
-
   const refreshList = () => {
-    retrieveusers();
+    props.retrieveusers();
   };
 
   const removeAllusers = () => {
-    TutorialDataService.removeAll()
+    UserService.removeAll()
       .then((response) => {
         console.log(response.data);
         refreshList();
@@ -42,73 +30,27 @@ const UsersList = (props) => {
       });
   };
 
-  const findByTitle = (searchTitle) => {
-    console.log(users.filter(search=>search.first_name==="George"))
+  const findByTitle = () => {
+    props.searchUser(searchTitle);
   };
 
   const openTutorial = (rowIndex) => {
     const id = usersRef.current[rowIndex].id;
-
-    props.history.push("/users/" + id);
-    
+    history.push("/getuser",{ id: id});
   };
 
   const deleteTutorial = (rowIndex) => {
-    console.log(rowIndex);
     const id = usersRef.current[rowIndex].id;
 
-    TutorialDataService.remove(id)
+    UserService.remove(id)
       .then((response) => {
-        props.history.push("/users");
-
-        let newusers = [...usersRef.current];
-        newusers.splice(rowIndex, 1);
-
-        setusers(newusers);
+        if (response.status === 204) props.deleteUser(rowIndex);
+        else alert("Some thing went wrong");
       })
       .catch((e) => {
         console.log(e);
       });
   };
-
-  const columns = useMemo(
-    () => [
-      {
-        Header: "Title",
-        accessor: "title",
-      },
-      {
-        Header: "Description",
-        accessor: "description",
-      },
-      {
-        Header: "Status",
-        accessor: "published",
-        Cell: (props) => {
-          return props.value ? "Published" : "Pending";
-        },
-      },
-      {
-        Header: "Actions",
-        accessor: "actions",
-        Cell: (props) => {
-          const rowIdx = props.row.id;
-          return (
-            <div>
-              <span onClick={() => openTutorial(rowIdx)}>
-                <i className="far fa-edit action mr-2"></i>
-              </span>
-
-              <span onClick={() => deleteTutorial(rowIdx)}>
-                <i className="fas fa-trash action"></i>
-              </span>
-            </div>
-          );
-        },
-      },
-    ],
-    []
-  );
 
   return (
     <div className="list row">
@@ -143,11 +85,10 @@ const UsersList = (props) => {
             </tr>
           </thead>
           <tbody>
-            {console.log(users)}
-            {users.map((tableData, rowIndex) => (
+            {props.filterUsers.map((tableData, rowIndex) => (
               <tr key={rowIndex}>
                 <td key={rowIndex}>
-                  <img src={tableData.avatar} />
+                  <img src={tableData.avatar}  alt={tableData.first_name}/>
                 </td>
                 <td>{tableData.first_name}</td>
                 <td>{tableData.last_name}</td>
