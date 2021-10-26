@@ -12,6 +12,7 @@ import Users from "./components/Users";
 import UsersList from "./components/UsersList";
 
 import UserService from "./services/UserService";
+import NoComponenet from "./components/NoComponenet";
 
 function App() {
   const [users, setusers] = useState([]);
@@ -98,6 +99,7 @@ function App() {
           <Route path="/getuser">
             <Users />
           </Route>
+          <Route path="*" component={NoComponenet} />
         </Switch>
       </div>
     </div>
