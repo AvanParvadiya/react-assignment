@@ -61,6 +61,13 @@ function App() {
       return [...prvUser, addnewUser];
     });
   };
+  const updateUserInfo=(userInfo,userId)=>{
+    const index = users.findIndex(user => user.id === userId);
+    users[index]=userInfo;
+    setusers(users);
+    setFilter(users);
+    console.log(index)
+  }
   return (
     <div>
       <nav className="navbar navbar-expand navbar-dark bg-dark">
@@ -96,7 +103,7 @@ function App() {
             <AddUser addnewUser={addnewUser} />
           </Route>
           <Route path="/getuser">
-            <Users />
+            <Users onUpdate={updateUserInfo} />
           </Route>
           <Route path="*" component={NoComponenet} />
         </Switch>

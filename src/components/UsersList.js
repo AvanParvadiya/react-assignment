@@ -1,10 +1,9 @@
-import React, { useState,useRef } from "react";
+import React, { useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
 
 import UserService from "../services/UserService";
 
 const UsersList = (props) => {
-  
   const [searchTitle, setSearchTitle] = useState("");
   const usersRef = useRef();
 
@@ -15,20 +14,11 @@ const UsersList = (props) => {
     setSearchTitle(searchTitle);
   };
 
-  const refreshList = () => {
-    props.retrieveusers();
-  };
+  // const refreshList = () => {
+  //   props.retrieveusers();
+  // };
 
-  const removeAllusers = () => {
-    UserService.removeAll()
-      .then((response) => {
-        console.log(response.data);
-        refreshList();
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
+ 
 
   const findByTitle = () => {
     props.searchUser(searchTitle);
@@ -36,7 +26,7 @@ const UsersList = (props) => {
 
   const openTutorial = (rowIndex) => {
     const id = usersRef.current[rowIndex].id;
-    history.push("/getuser",{ id: id});
+    history.push("/getuser", { id: id });
   };
 
   const deleteTutorial = (rowIndex) => {
@@ -88,7 +78,7 @@ const UsersList = (props) => {
             {props.filterUsers.map((tableData, rowIndex) => (
               <tr key={rowIndex}>
                 <td key={rowIndex}>
-                  <img src={tableData.avatar}  alt={tableData.first_name}/>
+                  <img src={tableData.avatar} alt={tableData.first_name} />
                 </td>
                 <td>{tableData.first_name}</td>
                 <td>{tableData.last_name}</td>
@@ -108,12 +98,6 @@ const UsersList = (props) => {
             ))}
           </tbody>
         </table>
-      </div>
-
-      <div className="col-md-8">
-        <button className="btn btn-sm btn-danger" onClick={removeAllusers}>
-          Remove All
-        </button>
       </div>
     </div>
   );

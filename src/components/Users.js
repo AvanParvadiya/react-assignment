@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import UserService from "../services/UserService";
 import { useHistory } from "react-router";
-
+import  { Link } from "react-router-dom";
 const Users = (props) => {
   const initialUserState = {
     id: null,
@@ -27,30 +27,17 @@ const Users = (props) => {
   useEffect(() => {
     getTutorial(history.location.state.id);
   }, [history.location.state.id]);
-  // props.match.params.id, props.history.location.pathname
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setCurrentUser({ ...currentUser, [name]: value });
   };
 
-  
-
   const updateTutorial = () => {
     UserService.update(currentUser.id, currentUser)
       .then((response) => {
         console.log(response.data);
+        props.onUpdate(response.data,response.data.id);
         setMessage("The user was updated successfully!");
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
-
-  const deleteTutorial = () => {
-    UserService.remove(currentUser.id)
-      .then((response) => {
-        console.log(response.data);
-        props.history.push("/users");
       })
       .catch((e) => {
         console.log(e);
@@ -99,10 +86,6 @@ const Users = (props) => {
             </div>
           </form>
 
-          <button className="badge badge-danger mr-2" onClick={deleteTutorial}>
-            Delete
-          </button>
-
           <button
             type="submit"
             className="badge badge-success"
@@ -110,7 +93,8 @@ const Users = (props) => {
           >
             Update
           </button>
-          <p>{message}</p>
+          
+          <Link to={"/Users"} className="nav-link">{message}</Link>
         </div>
       ) : (
         <div>

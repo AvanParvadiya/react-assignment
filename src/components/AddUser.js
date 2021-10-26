@@ -24,7 +24,7 @@ const AddTutorial = (props) => {
       last_name: user.last_name,
       email: user.email,
       job: user.job,
-      avatar: "https://i.pravatar.cc/128"
+      avatar: "https://i.pravatar.cc/128"  // some times image is not displaying because of slow network
     };
 
     UserService.create(data)
