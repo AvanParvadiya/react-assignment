@@ -33,24 +33,7 @@ const Users = (props) => {
     setCurrentUser({ ...currentUser, [name]: value });
   };
 
-  const updatePublished = (status) => {
-    var data = {
-      // id: currentUser.id,
-      first_name: currentUser.first_name,
-      last_name: currentUser.last_name,
-      email: currentUser.email,
-    };
-
-    UserService.update(currentUser.id, data)
-      .then((response) => {
-        setCurrentUser({ ...currentUser, published: status });
-        console.log(response.data);
-        setMessage("The status was updated successfully!");
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
+  
 
   const updateTutorial = () => {
     UserService.update(currentUser.id, currentUser)
